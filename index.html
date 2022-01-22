@@ -67,18 +67,15 @@
     <div class="num" onclick="down()">8</div>
     <div class="num" onclick="downright()">9</div>
     <br>
-    <div class="num" onclick="">*</div>
+    <div class="num" onclick="slower()">-</div>
     <div class="num" onclick="">0</div>
-    <div class="num" onclick="">#</div>
+    <div class="num" onclick="faster()">+</div>
 </div>
 
 <script>
-    window.onload = function () {
-        canv = document.getElementById('snake');
-        ctx = canv.getContext('2d');
-        document.addEventListener('keydown', keyPush);
-        setInterval(snake, 1000 / 20);
-    }
+    minspeed = 5;
+    maxspeed = 60;
+    gamespeed = 15;
     px = py = 10;
     gs = tc = 20;
     ax = ay = 15;
@@ -89,6 +86,14 @@
     v = false;
     ts = 5;
     s = hs = 0;
+
+    window.onload = function () {
+        canv = document.getElementById('snake');
+        ctx = canv.getContext('2d');
+        document.addEventListener('keydown', keyPush);
+        alert("WELCOME!\n\nFeel free to play and feel the nostalgia.\n\nPC users can use WASD or the Arrow keys to play.\n\nYou can also change the game speed/difficulty\n\n- RaeveN -");
+        snake();
+    }
 
     function snake() {
         px += xv;
@@ -137,21 +142,27 @@
         score(s);
 
         v = true;
+
+        setTimeout(snake, 1000 / gamespeed);
     }
 
     function keyPush(e) {
         if (v == true) {
             switch (e.keyCode) {
                 case 37:
+                case 65:
                     left();
                     break;
                 case 38:
+                case 87:
                     up();
                     break;
                 case 39:
+                case 68:
                     right();
                     break;
                 case 40:
+                case 83:
                     down();
                     break;
             }
@@ -214,6 +225,13 @@
         } else {
             down();
         }
+    }
+
+    function slower() {
+        gamespeed = gamespeed === minspeed ? minspeed : gamespeed-5;
+    }
+    function faster() {
+        gamespeed = gamespeed === maxspeed ? maxspeed : gamespeed+5;
     }
 
     function score(s) {
